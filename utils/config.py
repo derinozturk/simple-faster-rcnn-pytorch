@@ -2,14 +2,14 @@ from pprint import pprint
 
 
 # Default Configs for training
-# NOTE that, config items could be overwriten by passing argument through command line.
+# NOTE that, config items could be overwritten by passing argument through command line.
 # e.g. --voc-data-dir='./data/'
 
 class Config:
     # data
     voc_data_dir = '/home/cy/.chainer/dataset/pfnet/chainercv/voc/VOCdevkit/VOC2007/'
     min_size = 600  # image resize
-    max_size = 1000 # image resize
+    max_size = 1000  # image resize
     num_workers = 8
     test_num_workers = 8
 

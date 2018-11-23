@@ -127,6 +127,44 @@ def train(**kwargs):
 
 
 if __name__ == '__main__':
-    import fire
+    # From amazon-sagemaker-examples/blob/master/advanced_functionality/pytorch_extending_our_containers
+    # Found on github
 
-    fire.Fire()
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--min_size', type=int, default=600,
+                        help='image resize min size (default: 600)')
+    parser.add_argument('--max_size', type=int, default=1000,
+                        help='image resize max size (default: 1000)')
+    parser.add_argument('--workers', type=int, default=2, metavar='W',
+                        help='number of data loading workers (default: 2)')
+    parser.add_argument('--epochs', type=int, default=14, metavar='E',
+                        help='number of epochs to run (default: 14)')
+    parser.add_argument('--batch-size', type=int, default=4, metavar='BS',
+                        help='batch size (default: 4)')
+    parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
+                        help='initial learning rate (default: 0.001)')
+    parser.add_argument('--lr_decay', type=float, default=0.1,
+                        help='learning rate decay (default: 0.1)')
+    parser.add_argument('--weight_decay', type=float, default=0.0005,
+                        help='weight decay rate (default: 0.0005)')
+    parser.add_argument('--rpn_sigma', type=int, default=3,
+                        help='Sigma for regional proposal network (default: 3)')
+    parser.add_argument('--roi_sigma', type=int, default=1,
+                        help='Sigma for region of interest (default: 1)')
+    parser.add_argument('--load_path', type=str, default=None,
+                        help='Load path for data')
+    parser.add_argument('--use_adam', type=bool, default=False,
+                        help='Use Adam optimizer over SGD (default: False)')
+    parser.add_argument('--use_drop', type=bool, default=False,
+                        help='Use dropout in RoIHead (default: False)')
+
+
+    # The parameters below retrieve their default values from SageMaker environment variables, which are
+    # instantiated by the SageMaker containers framework.
+    # https://github.com/aws/sagemaker-containers#how-a-script-is-executed-inside-the-container
+    parser.add_argument('--hosts', type=str, default=ast.literal_eval(os.environ['SM_HOSTS']))
+    parser.add_argument('--current-host', type=str, default=os.environ['SM_CURRENT_HOST'])
+    parser.add_argument('--model-dir', type=str, default=os.environ['SM_MODEL_DIR'])
+    parser.add_argument('--data-dir', type=str, default=os.environ['SM_CHANNEL_TRAINING'])
+    parser.add_argument('--num-gpus', type=int, default=os.environ['SM_NUM_GPUS'])
