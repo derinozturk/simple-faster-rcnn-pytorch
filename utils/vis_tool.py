@@ -11,27 +11,8 @@ from matplotlib import pyplot as plot
 # from data.voc_dataset import VOC_BBOX_LABEL_NAMES
 
 
-VOC_BBOX_LABEL_NAMES = (
-    'fly',
-    'bike',
-    'bird',
-    'boat',
-    'pin',
-    'bus',
-    'c',
-    'cat',
-    'chair',
-    'cow',
-    'table',
-    'dog',
-    'horse',
-    'moto',
-    'p',
-    'plant',
-    'shep',
-    'sofa',
-    'train',
-    'tv',
+WIDER_BBOX_LABEL_NAMES = (
+    'face :)'
 )
 
 
@@ -55,6 +36,7 @@ def vis_image(img, ax=None):
         fig = plot.figure()
         ax = fig.add_subplot(1, 1, 1)
     # CHW -> HWC
+    img = img.transpose((1, 2, 0))
     img = img.transpose((1, 2, 0))
     ax.imshow(img.astype(np.uint8))
     return ax
@@ -88,7 +70,7 @@ def vis_bbox(img, bbox, label=None, score=None, ax=None):
 
     """
 
-    label_names = list(VOC_BBOX_LABEL_NAMES) + ['bg']
+    label_names = list(WIDER_BBOX_LABEL_NAMES) + ['bg']
     # add for index `-1`
     if label is not None and not len(bbox) == len(label):
         raise ValueError('The length of label must be same as that of bbox')

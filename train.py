@@ -6,7 +6,7 @@ import os
 import ipdb
 import matplotlib
 from tqdm import tqdm
-
+import argparse
 from utils.config import opt
 from data.dataset import Dataset, TestDataset, inverse_normalize
 from model import FasterRCNNVGG16
@@ -18,10 +18,10 @@ from utils.eval_tool import eval_detection_voc
 
 # fix for ulimit
 # https://github.com/pytorch/pytorch/issues/973#issuecomment-346405667
-import resource
+#import resource
 
-rlimit = resource.getrlimit(resource.RLIMIT_NOFILE)
-resource.setrlimit(resource.RLIMIT_NOFILE, (20480, rlimit[1]))
+#rlimit = resource.getrlimit(resource.RLIMIT_NOFILE)
+#resource.setrlimit(resource.RLIMIT_NOFILE, (20480, rlimit[1]))
 
 matplotlib.use('agg')
 
@@ -52,16 +52,16 @@ def train(**kwargs):
 
     dataset = Dataset(opt)
     print('load data')
-    dataloader = data_.DataLoader(dataset, \
-                                  batch_size=1, \
-                                  shuffle=True, \
+    dataloader = data_.DataLoader(dataset,
+                                  batch_size=1,
+                                  shuffle=True,
                                   # pin_memory=True,
                                   num_workers=opt.num_workers)
     testset = TestDataset(opt)
     test_dataloader = data_.DataLoader(testset,
                                        batch_size=1,
                                        num_workers=opt.test_num_workers,
-                                       shuffle=False, \
+                                       shuffle=False,
                                        pin_memory=True
                                        )
     faster_rcnn = FasterRCNNVGG16()
@@ -122,8 +122,6 @@ def train(**kwargs):
             trainer.faster_rcnn.scale_lr(opt.lr_decay)
             lr_ = lr_ * opt.lr_decay
 
-        if epoch == 13: 
-            break
 
 
 if __name__ == '__main__':
@@ -163,8 +161,9 @@ if __name__ == '__main__':
     # The parameters below retrieve their default values from SageMaker environment variables, which are
     # instantiated by the SageMaker containers framework.
     # https://github.com/aws/sagemaker-containers#how-a-script-is-executed-inside-the-container
-    parser.add_argument('--hosts', type=str, default=ast.literal_eval(os.environ['SM_HOSTS']))
-    parser.add_argument('--current-host', type=str, default=os.environ['SM_CURRENT_HOST'])
-    parser.add_argument('--model-dir', type=str, default=os.environ['SM_MODEL_DIR'])
-    parser.add_argument('--data-dir', type=str, default=os.environ['SM_CHANNEL_TRAINING'])
-    parser.add_argument('--num-gpus', type=int, default=os.environ['SM_NUM_GPUS'])
+    #parser.add_argument('--hosts', type=str, default=ast.literal_eval(os.environ['SM_HOSTS']))
+    #parser.add_argument('--current-host', type=str, default=os.environ['SM_CURRENT_HOST'])
+    #parser.add_argument('--model-dir', type=str, default=os.environ['SM_MODEL_DIR'])
+    #parser.add_argument('--data-dir', type=str, default=os.environ['SM_CHANNEL_TRAINING'])
+    #parser.add_argument('--num-gpus', type=int, default=os.environ['SM_NUM_GPUS'])
+    train()

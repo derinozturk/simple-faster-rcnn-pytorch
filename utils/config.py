@@ -1,5 +1,5 @@
 from pprint import pprint
-
+import os
 
 # Default Configs for training
 # NOTE that, config items could be overwritten by passing argument through command line.
@@ -7,7 +7,7 @@ from pprint import pprint
 
 class Config:
     # data
-    voc_data_dir = '/home/cy/.chainer/dataset/pfnet/chainercv/voc/VOCdevkit/VOC2007/'
+    data_dir = os.path.join('C:/', 'Users', 'doztu', 'witness_protection', 'datasets', 'WIDER')
     min_size = 600  # image resize
     max_size = 1000  # image resize
     num_workers = 8
@@ -34,7 +34,7 @@ class Config:
     pretrained_model = 'vgg16'
 
     # training
-    epoch = 14
+    epoch = 5
 
 
     use_adam = False # Use Adam optimizer
@@ -57,9 +57,9 @@ class Config:
                 raise ValueError('UnKnown Option: "--%s"' % k)
             setattr(self, k, v)
 
-        print('======user config========')
-        pprint(self._state_dict())
-        print('==========end============')
+        #print('======user config========')
+        #pprint(self._state_dict())
+        #print('==========end============')
 
     def _state_dict(self):
         return {k: getattr(self, k) for k, _ in Config.__dict__.items() \
